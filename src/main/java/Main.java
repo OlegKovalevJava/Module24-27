@@ -1,26 +1,31 @@
-import enums.StudyProfile;
+import comparator.StudentComparator;
+import comparator.UniversityComparator;
+import enums.StudentComparatorType;
+import enums.UniversityComparatorType;
+import io.XlsReader;
 import model.Student;
 import model.University;
+import util.ComparatorUtil;
+
+import java.io.IOException;
+import java.util.List;
 
 public class Main {
-    public static void main(String[] args) {
 
-        Student student = new Student();
+    public static void main(String[] args) throws IOException {
 
-        student.setAvgExamScore((float) 4.3)
-                .setCurrentCourseNumber(5)
-                .setFullName("Smirnov Nikolay Pavlovich")
-                .setUniversityId("007-agent");
-        System.out.println(student);
+        List<University> universities = XlsReader.readXlsUniversities("src/main/resources/universityInfo.xlsx");
+        UniversityComparator universityComparator =
+                ComparatorUtil.getUniversityComparator(UniversityComparatorType.YEAR);
+        universities.stream()
+                .sorted(universityComparator)
+                .forEach(System.out::println);
 
-        University university = new University();
-
-        university.setId("007-agent")
-                .setFullName("Lomonosov Moscow State University")
-                .setShortName("MSU")
-                .setYearOfFoundation(1755)
-                .setMainProfile(StudyProfile.INTERNATIONAL_LAW);
-        System.out.println(university);
-
+        List<Student> students = XlsReader.readXlsStudents("src/main/resources/universityInfo.xlsx");
+        StudentComparator studentComparator =
+                ComparatorUtil.getStudentComparator(StudentComparatorType.AVG_EXAM_SCORE);
+        students.stream()
+                .sorted(studentComparator)
+                .forEach(System.out::println);
     }
 }
