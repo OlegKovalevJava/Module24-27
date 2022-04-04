@@ -1,3 +1,5 @@
+module 24 - 27
+
 author: Kovalev Oleg email: kovalyovop@yandex.ru
 
 technologies used: Java, Maven
